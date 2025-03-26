@@ -1,41 +1,36 @@
 import java.io.*;
-import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer st;
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
-        st = new StringTokenizer(br.readLine(), " ");
         int n = Integer.parseInt(st.nextToken());
         int m = Integer.parseInt(st.nextToken());
-        Deque<Integer> queue = new ArrayDeque<>();
+        int[] arr = new int[n];
 
-        int sum = 0;
-        int cnt = 0;
         st = new StringTokenizer(br.readLine(), " ");
         for (int i = 0; i < n; i++) {
-            queue.addLast(Integer.parseInt(st.nextToken()));
-            sum += queue.getLast();
-            if(sum==m){
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+
+        int left = 0, right = 0, sum = 0, cnt = 0;
+
+        while (right < n) {
+            sum += arr[right++]; // right를 먼저 증가시키면서 sum에 추가
+            while (sum > m) {
+                sum -= arr[left++]; // sum이 m보다 크면 left를 증가시키면서 줄임
+            }
+            if (sum == m) {
                 cnt++;
-            }else if(sum>m){
-                while(sum>m){
-                    int rm=queue.removeFirst();
-                    sum-=rm;
-                    if(sum==m){
-                        cnt++;
-                        break;
-                    }
-                }
             }
         }
+
         bw.write(String.valueOf(cnt));
         bw.flush();
-        bw.close();
         br.close();
+        bw.close();
     }
 }
