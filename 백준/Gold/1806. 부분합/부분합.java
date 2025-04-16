@@ -9,31 +9,25 @@ public class Main {
 
         int n = Integer.parseInt(st.nextToken());
         int s = Integer.parseInt(st.nextToken());
-        int[] arr=new int[100001];
+        int[] arr=new int[n+1];
 
-        int sum=0;
         int minLen=Integer.MAX_VALUE;
-        int len=0;
+        int sum=0;
         int start=0;
 
         st = new StringTokenizer(br.readLine());
-        for(int i=0;i<n;i++){
-            int k=Integer.parseInt(st.nextToken());
-            arr[i]=k;
-            sum+=k;
-            len++;
+        for(int end=0; end<n; end++){
+            arr[end]=Integer.parseInt(st.nextToken());
+            sum+=arr[end];
             while(sum>=s){
-                if(len<minLen){
-                    minLen=len;
-                }
+                minLen=Math.min(minLen,end-start+1);
                 sum-=arr[start];
                 start++;
-                len--;
             }
         }
 
         if(minLen==Integer.MAX_VALUE){
-            bw.write(String.valueOf(0));
+            bw.write("0");
         }else{
             bw.write(String.valueOf(minLen));
         }
