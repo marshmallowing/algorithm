@@ -1,10 +1,6 @@
 import java.io.*;
-import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.StringTokenizer;
 
-// 짝수로 이루어져 있는 연속한 부분 수열 중 가장 긴 길이
-// 최대 K번 원소를 삭제
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -13,31 +9,33 @@ public class Main {
 
         int n = Integer.parseInt(st.nextToken());
         int k = Integer.parseInt(st.nextToken());
-        int[] s = new int[n+1];
-        Deque<Integer> deletePos = new ArrayDeque<>();
+        int[] s = new int[n];
 
         st = new StringTokenizer(br.readLine());
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             s[i] = Integer.parseInt(st.nextToken());
         }
 
-        int start=0;
+        int start = 0;
+        int oddCount = 0; //홀수 개수
         int maxLen = 0;
 
-        for(int i = 0; i < n; i++) {
-            if (s[i] % 2 != 0) {
-                deletePos.addLast(i);
-                if (deletePos.size() > k) {
-                    start = deletePos.pollFirst() + 1;
-                }
+        for (int end = 0; end < n; end++) {
+            if (s[end] % 2 != 0) {
+                oddCount++;
             }
-            // 전체 길이 - 삭제된 홀수 개수
-            int len = i - start + 1 - deletePos.size();
-            maxLen = Math.max(maxLen, len);
+						//시작점 갱신
+            while (oddCount > k) {
+                if (s[start] % 2 != 0) {
+                    oddCount--;
+                }
+                start++;
+            }
+
+            maxLen = Math.max(maxLen, end - start + 1 - oddCount);
         }
 
         bw.write(String.valueOf(maxLen));
-
         bw.flush();
         bw.close();
         br.close();
